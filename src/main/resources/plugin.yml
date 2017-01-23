@@ -1,0 +1,12 @@
+main: com.rayzr522.stafflogin.StaffLogin
+name: StaffLogin
+version: 1.0.0
+description: Forces staff to have to log in before they can move or do anything.
+authors: [Perceive team]
+#depend: [PerceiveCore]
+#commands:
+#  stafflogin:
+#    description: StaffLogin main command
+#    aliases: [alias1,alias2]
+#    usage: "/stafflogin [command]"
+#    permission: StaffLogin.main
