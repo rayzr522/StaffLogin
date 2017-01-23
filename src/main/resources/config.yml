@@ -1,0 +1,14 @@
+prefix: "&8\u00bb&6" 
+
+messages:
+    must-login: 'You must &c/login&6 before you can do anything!'
+    login-change-pass: 'You must &c/login&6 before you can change your password!'
+    already-logged-in: '&cYou''re already logged in!'
+    create-password: 'You must &ccreate a password&6. Do &c/password <password>&6 to create or change your password.'
+    usage-login: 'Usage: &7/login &c<password>'
+    usage-password: 'Usage &7/password &c<password>'
+    wrong-password: '&cWrong password!'
+    logged-in: 'You are now &clogged in&6.'
+    logged-out: 'You are now &clogged out&6.'
+    not-logged-in: '&cYou aren''t logged in!'
+    password-set: 'You have &cset your password&6.'
