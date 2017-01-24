@@ -51,7 +51,7 @@ public class CommandLogin implements CommandExecutor {
             return true;
         }
 
-        if (!plugin.logIn(player, args[0].hashCode())) {
+        if (!plugin.logIn(player, args[0])) {
             player.sendMessage(plugin.tr("wrong-password"));
             return true;
         }

@@ -1,9 +1,11 @@
 package com.rayzr522.stafflogin;
 
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,7 +17,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class StaffLogin extends JavaPlugin {
 
-    private Map<UUID, Integer> passwords = new HashMap<>();
+    private static final Pattern ENCRYPTED_PATTERN = Pattern.compile("\\d+:[a-z0-9]+:[a-z0-9]+");
+
+    private Map<UUID, String> passwords = new HashMap<>();
     private Map<UUID, Boolean> loggedIn = new HashMap<>();
     private Map<String, String> messages = new HashMap<>();
 
@@ -47,13 +51,23 @@ public class StaffLogin extends JavaPlugin {
         save();
     }
 
+    /**
+     * Attempts to load all information from the config;
+     * 
+     * @return {@code true}, unless something goes wrong.
+     */
     public boolean load() {
         FileConfiguration config = getConfig();
         if (config.isConfigurationSection("passwords")) {
             passwords.clear();
             ConfigurationSection passwordsSection = config.getConfigurationSection("passwords");
             passwordsSection.getKeys(false).forEach(k -> {
-                passwords.put(UUID.fromString(k), passwordsSection.getInt(k));
+                String password = passwordsSection.getString(k);
+                if (!ENCRYPTED_PATTERN.matcher(password).matches()) {
+                    getLogger().warning(String.format("Invalid password for UUID %s: %s", k, password));
+                } else {
+                    passwords.put(UUID.fromString(k), password);
+                }
             });
         }
 
@@ -67,6 +81,9 @@ public class StaffLogin extends JavaPlugin {
         return true;
     }
 
+    /**
+     * Saves all important data to the config file.
+     */
     public void save() {
         passwords.entrySet().stream().forEach(e -> {
             getConfig().set("passwords." + e.getKey(), e.getValue());
@@ -75,29 +92,42 @@ public class StaffLogin extends JavaPlugin {
     }
 
     /**
-     * @return the passwords
+     * @return The map of passwords
      */
-    public Map<UUID, Integer> getPasswords() {
+    public Map<UUID, String> getPasswords() {
         return passwords;
     }
 
     /**
-     * @return the loggedIn
+     * @return The map of logged-in player
      */
     public Map<UUID, Boolean> getLoggedIn() {
         return loggedIn;
     }
 
+    /**
+     * Logs a player out
+     * 
+     * @param player The player to log out
+     * @return Whether or not the player was logged in
+     */
     public boolean logOut(Player player) {
         return loggedIn.put(player.getUniqueId(), false);
     }
 
-    public boolean logIn(Player player, int password) {
+    /**
+     * Attempt to log a player in
+     * 
+     * @param player The player to attempt to log in
+     * @param password The password to use
+     * @return Whether or not the player was logged in. This can return {@code false} for many reasons, including not having set a password, already being logged in, and of course, providing the wrong password.
+     */
+    public boolean logIn(Player player, String password) {
         if (!passwords.containsKey(player.getUniqueId()))
             return false;
         if (loggedIn.getOrDefault(player.getUniqueId(), false))
             return true;
-        if (passwords.get(player.getUniqueId()) != password)
+        if (!Encrypter.check(password, passwords.get(player.getUniqueId())))
             return false;
         loggedIn.put(player.getUniqueId(), true);
         return true;
@@ -112,29 +142,38 @@ public class StaffLogin extends JavaPlugin {
     }
 
     /**
-     * @return The custom prevention message
+     * @return Returns a message from the config with the given key
      */
     public String tr(String key) {
         return messages.get(key);
     }
 
     /**
-     * @param player
-     * @return
+     * This returns true if they have yet to set a password or if they are already logged in.
+     * 
+     * @param player Player to check
+     * @return Whether or not a player is allowed to set a new password
      */
     public boolean canSetPassword(Player player) {
-        return !passwords.containsKey(player.getUniqueId()) || loggedIn.get(player.getUniqueId());
+        return !passwords.containsKey(player.getUniqueId()) || loggedIn.getOrDefault(player.getUniqueId(), false);
     }
 
     /**
-     * @param player
-     * @return
+     * Attempts to set the password for a player. The plain-text password is encrypted via {@link Encrypter#apply(String, byte[], int, int) this method}.
+     * 
+     * @param player The player to set the password for
+     * @param password The plain-text password to set
+     * @return Whether or not the password was set (returns false if {@link #canSetPassword(Player)} returns <code>false</code>)
      */
-    public boolean setPassword(Player player, int password) {
+    public boolean setPassword(Player player, String password) {
         if (!canSetPassword(player)) {
             return false;
         }
-        passwords.put(player.getUniqueId(), password);
+
+        byte[] salt = new byte[16];
+        new SecureRandom().nextBytes(salt);
+
+        passwords.put(player.getUniqueId(), Encrypter.apply(password, salt, 2560, 512));
         loggedIn.put(player.getUniqueId(), true);
         return true;
     }

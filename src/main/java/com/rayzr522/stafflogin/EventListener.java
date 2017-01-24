@@ -18,6 +18,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -64,6 +65,9 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
+        if (e.getTo().toVector().equals(e.getFrom().toVector())) {
+            return;
+        }
         if (handle(e, e.getPlayer())) {
             e.setCancelled(false);
             e.setTo(e.getFrom());
@@ -140,6 +144,11 @@ public class EventListener implements Listener {
         if (!ALLOWED_COMMANDS.contains(cmd)) {
             handle(e, e.getPlayer());
         }
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent e) {
+        handle(e, e.getPlayer());
     }
 
     @EventHandler

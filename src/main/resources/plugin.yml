@@ -1,6 +1,6 @@
 main: com.rayzr522.stafflogin.StaffLogin
 name: StaffLogin
-version: 1.0.0
+version: 1.1.0
 description: Forces staff to have to log in before they can move or do anything.
 author: Rayzr
 commands:

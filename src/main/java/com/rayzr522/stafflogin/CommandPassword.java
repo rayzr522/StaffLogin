@@ -36,7 +36,7 @@ public class CommandPassword implements CommandExecutor {
             return true;
         }
 
-        if (!plugin.setPassword(player, args[0].hashCode())) {
+        if (!plugin.setPassword(player, args[0])) {
             player.sendMessage(plugin.tr("login-change-pass"));
             return true;
         }
