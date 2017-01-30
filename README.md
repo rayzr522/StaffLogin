@@ -14,6 +14,10 @@ Players are logged _out_ either when they disconnect from the server or when the
 
 Some of them might seem like overkill, considering it _should_ be impossible to craft items if you can't click your inventory slots, and you can't use a bucket if you can't interact. This is probably true, but it doesn't hurt to be too safe. Who knows what odd stuff might happen with hacked-clients and such :D
 
+_This plugin was done as a request for the **HydrusPvP** server._
+
+#### [Downloads](https://github.com/Rayzr522/Sta/releases)
+
 ## Commands
 ### `/login`
 Permission: `StaffLogin.require`  
