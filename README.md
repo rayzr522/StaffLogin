@@ -16,7 +16,9 @@ Some of them might seem like overkill, considering it _should_ be impossible to 
 
 _This plugin was done as a request for the **HydrusPvP** server._
 
-#### [Downloads](https://github.com/Rayzr522/Sta/releases)
+
+## Installation
+Just grab the latest JAR off of the [releases page](https://github.com/Rayzr522/StaffLogin/releases)! It's that easy.
 
 ## Commands
 ### `/login`
@@ -33,3 +35,8 @@ Description: Logs you out.
 Permission: `StaffLogin.require`  
 Usage: `/password <password>`
 Description: Sets your password. If you already have a password, it requires you to be logged in to change it.
+
+### `/passwordreset`
+Permission: `StaffLogin.admin`  
+Usage: `/passwordreset <player>`  
+Description: Resets the password of a player and logs them out. They will have to use `/password` to set a new password.
