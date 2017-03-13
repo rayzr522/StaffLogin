@@ -1,33 +1,30 @@
 /**
  * 
  */
-package com.rayzr522.stafflogin;
+package com.rayzr522.stafflogin.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.rayzr522.stafflogin.StaffLogin;
+
 /**
  * @author Rayzr
  *
  */
-public class CommandLogout implements CommandExecutor {
+public class CommandPassword implements CommandExecutor {
 
     private StaffLogin plugin;
 
     /**
-     * @param staffLogin
+     * @param plugin The {@link StaffLogin} instance
      */
-    public CommandLogout(StaffLogin plugin) {
+    public CommandPassword(StaffLogin plugin) {
         this.plugin = plugin;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.bukkit.command.CommandExecutor#onCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, java.lang.String, java.lang.String[])
-     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
@@ -36,11 +33,17 @@ public class CommandLogout implements CommandExecutor {
         }
         Player player = (Player) sender;
 
-        if (plugin.logOut(player)) {
-            player.sendMessage(plugin.tr("logged-out"));
-        } else {
-            player.sendMessage(plugin.tr("not-logged-in"));
+        if (args.length < 1) {
+            player.sendMessage(plugin.tr("usage-password"));
+            return true;
         }
+
+        if (!plugin.setPassword(player, args[0])) {
+            player.sendMessage(plugin.tr("login-change-pass"));
+            return true;
+        }
+
+        player.sendMessage(plugin.tr("password-set"));
 
         return true;
     }

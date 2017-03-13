@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.rayzr522.stafflogin;
+package com.rayzr522.stafflogin.event;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,6 +28,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+
+import com.rayzr522.stafflogin.StaffLogin;
 
 /**
  * @author Rayzr

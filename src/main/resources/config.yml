@@ -12,3 +12,5 @@ messages:
     logged-out: 'You are now &clogged out&6.'
     not-logged-in: '&cYou aren''t logged in!'
     password-set: 'You have &cset your password&6.'
+    no-such-player: '&cThat player doesn''t exist!'
+    password-reset: 'The player''s password has been reset.'

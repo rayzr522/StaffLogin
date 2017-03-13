@@ -9,11 +9,19 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import com.rayzr522.stafflogin.command.CommandLogin;
+import com.rayzr522.stafflogin.command.CommandLogout;
+import com.rayzr522.stafflogin.command.CommandPassword;
+import com.rayzr522.stafflogin.command.CommandPasswordReset;
+import com.rayzr522.stafflogin.event.EventListener;
+import com.rayzr522.stafflogin.util.Encrypter;
 
 public class StaffLogin extends JavaPlugin {
 
@@ -44,6 +52,7 @@ public class StaffLogin extends JavaPlugin {
         getCommand("login").setExecutor(new CommandLogin(this));
         getCommand("logout").setExecutor(new CommandLogout(this));
         getCommand("password").setExecutor(new CommandPassword(this));
+        getCommand("passwordreset").setExecutor(new CommandPasswordReset(this));
     }
 
     @Override
@@ -111,7 +120,10 @@ public class StaffLogin extends JavaPlugin {
      * @param player The player to log out
      * @return Whether or not the player was logged in
      */
-    public boolean logOut(Player player) {
+    public boolean logOut(OfflinePlayer player) {
+        if (player == null) {
+            return false;
+        }
         return loggedIn.put(player.getUniqueId(), false);
     }
 

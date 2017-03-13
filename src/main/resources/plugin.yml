@@ -1,18 +1,22 @@
 main: com.rayzr522.stafflogin.StaffLogin
 name: StaffLogin
-version: 1.1.0
+version: 1.2.0
 description: Forces staff to have to log in before they can move or do anything.
 author: Rayzr
 commands:
   login:
-    description: Log in as staff
+    description: "Log in as staff"
     usage: "/login <password>"
     permission: StaffLogin.require
   logout:
-    description: Log out
+    description: "Log out"
     usage: "/logout"
     permission: StaffLogin.require
   password:
-    description: Set your password
+    description: "Set your password"
     usage: "/password <password>"
     permission: StaffLogin.require
+  passwordreset:
+    description: "Reset a player's password"
+    usage: "/passwordreset <player>"
+    permission: StaffLogin.admin

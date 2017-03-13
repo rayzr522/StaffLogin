@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.rayzr522.stafflogin;
+package com.rayzr522.stafflogin.util;
 
 import java.math.BigInteger;
 import java.util.Objects;
