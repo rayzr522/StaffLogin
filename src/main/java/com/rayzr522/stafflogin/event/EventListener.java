@@ -24,6 +24,7 @@ import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -156,6 +157,11 @@ public class EventListener implements Listener {
     @EventHandler
     public void onLogOut(PlayerQuitEvent e) {
         plugin.logOut(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onLogIn(PlayerJoinEvent e) {
+        plugin.getLoggedIn().put(e.getPlayer().getUniqueId(), false);
     }
 
 }
